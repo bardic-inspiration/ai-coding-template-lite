@@ -93,10 +93,11 @@ whether it survives contact with reality, use this skill.
 
 ## Notes for this repo
 
-- Sessions here have no memory of earlier ones, so record what the grilling
-  settled: design changes into `SPEC.md`, gaps still open into its "Open
-  questions", and choices made between alternatives into `DECISIONS.md`
-  (`AGENTS.md` "Recording decisions").
+- Sessions here have no memory of earlier ones. Keep track of what the
+  grilling settled: the PR that acts on it records each decision in
+  `DECISIONS.md` and the design changes in `SPEC.md`. Gaps still open go
+  into the spec's "Open questions". Anything settled but not acted on isn't
+  logged (`AGENTS.md` "Recording decisions").
 - Grilling is not license to expand scope. If it surfaces a real gap outside
   the current task, note it as a follow-up rather than folding it into the
   current plan.

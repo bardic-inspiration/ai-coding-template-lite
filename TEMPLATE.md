@@ -36,7 +36,9 @@ grep -rnE '\{\{[A-Z_0-9]+\}\}|TEMPLATE:' --exclude-dir=.git .
      toolchain setup, install, and `check`;
    - add the install step to `.claude/hooks/session-start.sh`;
    - add the toolchain's entries to `.gitignore`.
-4. **Fill the remaining placeholders**, delete this file and the README
+4. **Clear `DECISIONS.md`** down to its header and entry format — the
+   entries there record how this template was built, not your project.
+5. **Fill the remaining placeholders**, delete this file and the README
    banner, and run the grep above until it returns nothing.
 
 ## GitHub settings

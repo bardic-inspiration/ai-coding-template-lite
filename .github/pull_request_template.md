@@ -11,7 +11,10 @@ touches. -->
 
 ## Decisions
 
-<!-- Any DECISIONS.md entries added or superseded, by ID. Delete if none. -->
+<!-- Required. The DECISIONS.md entries this PR adds or supersedes, by ID and
+name — every decision this change acts on, including ones settled in chat
+(AGENTS.md "Recording decisions"). Write "None" only if the change involved
+no choices. -->
 
 ## Testing
 

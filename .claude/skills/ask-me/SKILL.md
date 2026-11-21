@@ -82,10 +82,11 @@ use this skill.
 
 ## Notes for this repo
 
-- Sessions here have no memory of earlier ones, so write the confirmed intent
-  where the next session will find it: purpose and non-goals into `SPEC.md`,
-  unresolved points into its "Open questions", and any real choice the user
-  made into `DECISIONS.md` (`AGENTS.md` "Recording decisions").
+- Sessions here have no memory of earlier ones. Keep track of the choices
+  the user makes during the interview: the PR that acts on them records each
+  in `DECISIONS.md` and writes the outcome into `SPEC.md`. Points left
+  unresolved go into the spec's "Open questions". Choices that end up not
+  acted on aren't logged (`AGENTS.md` "Recording decisions").
 - Keep the interview scoped to the task at hand. If it surfaces a separate
   concern (a bug, an idea for later), note it as a follow-up rather than
   folding it into the current work.

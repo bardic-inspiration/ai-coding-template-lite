@@ -13,7 +13,7 @@ just the chat.
 | File | Holds | Update it when |
 |---|---|---|
 | [`SPEC.md`](SPEC.md) | The design: purpose, concepts, behavior, open questions. Present tense. | The design changes — in the same PR as any code that follows from it. |
-| [`DECISIONS.md`](DECISIONS.md) | A log of decisions and why they were made. | A choice is made that someone might later question or undo. |
+| [`DECISIONS.md`](DECISIONS.md) | A log of decisions that were acted on, and why. | In every PR that acts on a decision. |
 | `README.md` | What the project is, and how to run it. | Setup or the one-paragraph pitch changes. |
 | `AGENTS.md` | This guide. | The way of working changes. |
 
@@ -29,8 +29,9 @@ the index.
   a real choice) before building on it.
 - **Spec and code agree on `main`.** A change to behavior updates `SPEC.md`
   in the same PR. If they disagree, one of them is wrong — fix that one.
-- **Record decisions as they're made**, including ones settled in chat
-  (below).
+- **Every PR records the decisions it acts on** in `DECISIONS.md`,
+  including ones settled in chat (Recording decisions, below). A decision
+  that lives only in a chat is lost.
 - **One concern per PR.** Out-of-scope ideas go in a follow-up issue or the
   spec's open questions, not into the current change and not into a `TODO`.
 - **`check` is green before merging.** Never skip, disable, or weaken a test
@@ -47,32 +48,44 @@ the index.
 4. **Build, with tests.** Behavior that's settled ships with tests; writing
    the test first is the default.
 5. **Run `check`** (Commands, below).
-6. **Open a PR** with a clear title and description (below). Fix CI if it
+6. **Record decisions.** Add a `DECISIONS.md` entry for each decision this
+   change acts on (Recording decisions, below).
+7. **Open a PR** with a clear title and description (below). Fix CI if it
    goes red. The developer merges.
 
-Changing only Markdown? Skip steps 4–5.
+Changing only Markdown? Skip steps 4–5; step 6 still applies.
 
 ## Spikes
 
 When the question is "would this work?" or "A or B?", spike it: throwaway
 code on a `spike/<question>` branch, no tests or tidiness required. Open it
 as a **draft PR** titled `spike: <question>` with the findings in the
-description — question, what you tried, what worked, recommendation. Then
-record the outcome in `SPEC.md` and `DECISIONS.md`, close the PR unmerged,
-and rebuild the real thing through the working loop.
+description — question, what you tried, what worked, recommendation. Close
+it unmerged, then carry the outcome forward through the working loop: the
+PR that acts on it updates `SPEC.md` and records the decision, citing the
+spike PR.
 
 ## Recording decisions
 
-Add an entry to [`DECISIONS.md`](DECISIONS.md) when a choice:
+Decisions get made in chat, in interviews (`ask-me`, `grill-me`), and while
+building. The chat is gone when the session ends, so **the PR that acts on a
+decision records it** in [`DECISIONS.md`](DECISIONS.md), in the same PR.
 
-- picks between real alternatives,
-- would look arbitrary or tempting to reverse later, or
-- changes or drops something the spec used to say.
+- **Acted on → recorded.** If a decision shapes the change — the code, the
+  spec, or the way of working — it gets an entry, and the PR lists its ID.
+- **Not acted on → discarded.** A decision talked through but not acted on
+  isn't logged. If it still matters, it becomes an open question in
+  `SPEC.md` or a follow-up issue; it's recorded when some later PR acts on it.
+- **Before opening a PR,** review the session for decisions that shaped the
+  change, small ones included: a choice between alternatives, a constraint
+  the developer stated, something dropped or deferred. When unsure, record
+  it — an entry is cheap; a lost reason isn't.
 
-Entries are short: what was decided, why, and what else was considered.
-Newest at the top; never edit an old entry's substance — supersede it with a
-new one and mark the old one `Superseded by D-n`. The spec states the
-outcome; a rule that needs explaining can point to its entry (`See D-4.`).
+Entries are short: what was decided, why, what else was considered, and the
+PR that acted on it. Newest at the top. Never edit an old entry's
+substance — supersede it with a new one and mark the old one
+`Superseded by D-n`. The spec states the outcome; a rule that needs
+explaining can point to its entry (`See D-4.`).
 
 ## Pull requests and commits
 
@@ -83,8 +96,8 @@ PRs land by **squash merge**, so the PR title becomes the commit subject on
   subject — `type(scope): imperative subject`, ≤ 72 characters. Types:
   `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `ci`, `build`.
 - **Description:** fill in the
-  [template](.github/pull_request_template.md) — what and why, decisions
-  made, how it was tested. Delete the guidance comments.
+  [template](.github/pull_request_template.md) — what and why, the
+  decisions recorded, how it was tested. Delete the guidance comments.
 - **Branch commits** don't reach `main`; any message that says what the step
   did is fine. Don't force-push a branch you've pushed — merge `main` in to
   catch up.
