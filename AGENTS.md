@@ -1,137 +1,127 @@
-# AGENTS.md — Canonical Guide for AI Coding Agents
+# AGENTS.md — How to Work Here
 
-This is the **authoritative guide** for how work is done in this repository, by
-agents or humans. If another doc disagrees with this one, this one wins —
-except that [`SPEC.md`](SPEC.md) is the source of truth for *what to build*;
-this file is the source of truth for *how to work*.
+The guide for any agent (or person) working in this repo. One developer, one
+agent, one design document. [`SPEC.md`](SPEC.md) says **what to build**; this
+file says **how to work**.
 
-Work is done by AI sessions that start with no memory of earlier ones.
-Nothing carries over except what's in the repo and on GitHub — issues, PRs,
-review threads, and the commit history — so every rule below exists to make
-one session's work legible to the next.
+Sessions start with no memory of earlier ones. Anything the next session needs
+— the design, decisions, open questions, follow-ups — goes into the repo, not
+just the chat.
 
-## Purpose & scope
+## The files
 
-What the project is, and what it deliberately isn't, lives in one place:
-[`SPEC.md`](SPEC.md) "Purpose & non-goals". Work bigger than one PR is
-sequenced by open plan issues — issues labeled `plan`, with their tasks as
-sub-issues ([`docs/spec-driven-development.md`](docs/spec-driven-development.md)
-"Plans").
+| File | Holds | Update it when |
+|---|---|---|
+| [`SPEC.md`](SPEC.md) | The design: purpose, concepts, behavior, open questions. Present tense. | The design changes — in the same PR as any code that follows from it. |
+| [`DECISIONS.md`](DECISIONS.md) | A log of decisions that were acted on, and why. | In every PR that acts on a decision. |
+| `README.md` | What the project is, and how to run it. | Setup or the one-paragraph pitch changes. |
+| `AGENTS.md` | This guide. | The way of working changes. |
 
-## How work happens
+Add other docs only when one of these gets too long to read by section — for
+example, split a large spec into `docs/spec/<area>.md` and keep `SPEC.md` as
+the index.
 
-Two modes build; a spike explores. Every change reaches `main` the same way
-— a PR, a green check, a human merge — whichever mode produced it. A spike
-never reaches `main` at all ([`docs/workflow.md`](docs/workflow.md)
-"Spikes").
+## Rules
 
-| | Interactive session | Routine | Spike |
-|---|---|---|---|
-| Who's there | The user, in the loop | Nobody, until review | Usually the user |
-| Where the task comes from | Chat, or an issue | An issue: handed to it, or the next in the queue | A question |
-| Where the task is recorded | The PR description — file an issue only for work this session won't do | The issue | The findings, in a draft PR |
-| When blocked | Ask the user | Say so on the issue or PR, and stop | Record it — a dead end is a finding |
-| After opening the PR | Watch CI to green, and report | Watch CI to green | File the follow-ups, then close it unmerged |
-
-The thread through all three: **the task is the prompt, the PR is the
-response, review is the evaluation, and the squash commit on `main` is the
-record** — for a spike, the closed PR's findings are the record.
-
-## Hard rules
-
-These hold for every change, whatever the task says. A change that breaks one
-is wrong even if CI is green.
-
-- **Red CI is never merged**, and tests are never skipped, disabled, or
-  weakened to get green ([`docs/ci.md`](docs/ci.md)).
-- **Don't silently invent behavior.** If the spec or the task is ambiguous or
-  looks wrong, resolve it in the spec rather than guessing in code.
-- **The project's invariants hold** — [`SPEC.md`](SPEC.md) "Invariants".
-- **One concern per PR**, and only what its task asks for
-  ([`docs/workflow.md`](docs/workflow.md) "Scope").
-- **A PR you open is yours until it's merged or closed** — watch its CI and
-  fix what fails ([`docs/workflow.md`](docs/workflow.md) "Watching CI").
-- **Spike code never merges.** A spike's output is its findings; the real
-  work is rebuilt through the working loop.
-- **The repo is the memory.** Decisions, follow-ups, and open questions go
-  into the spec, issues, and PR descriptions — never only into a chat the next
-  session can't see.
-
-## Repo layout
-
-<!-- TEMPLATE: extend the tree with the project's own top-level directories.
-Mark anything that doesn't exist yet as "(planned)". -->
-
-```
-/
-├── AGENTS.md          # this file — how to work
-├── SPEC.md            # what to build
-├── CLAUDE.md          # Claude Code: imports this file, adds tool specifics
-├── CONTRIBUTING.md    # setup for humans
-├── docs/              # protocol docs (routing table below)
-├── .claude/           # Claude Code settings, hooks, skills
-└── .github/           # CI, Dependabot, issue & PR templates
-```
+- **Don't guess at the design.** If the spec is silent, ambiguous, or looks
+  wrong, stop and ask. Record the question in `SPEC.md` "Open questions";
+  once answered, write the answer into the spec (and `DECISIONS.md` if it was
+  a real choice) before building on it.
+- **Spec and code agree on `main`.** A change to behavior updates `SPEC.md`
+  in the same PR. If they disagree, one of them is wrong — fix that one.
+- **Every PR records the decisions it acts on** in `DECISIONS.md`,
+  including ones settled in chat (Recording decisions, below). A decision
+  that lives only in a chat is lost.
+- **One concern per PR.** Out-of-scope ideas go in a follow-up issue or the
+  spec's open questions, not into the current change and not into a `TODO`.
+- **`check` is green before merging.** Never skip, disable, or weaken a test
+  to get there.
 
 ## Working loop
 
-1. **Take one task.** Interactive: from chat, or an issue. Routine: the issue
-   you were handed, or the next in the queue
-   ([`docs/workflow.md`](docs/workflow.md) "The queue").
-2. **Read before you write:** the task, the `SPEC.md` sections it cites, and
-   every doc it references. `git log` on the files you'll touch is context
-   too — each commit on `main` is one whole PR, with its why in the body.
-3. **Branch from `main`** ([`docs/workflow.md`](docs/workflow.md) "Branches").
-4. **Test first.** A failing test, the minimal code to pass it, then refactor
-   ([`docs/testing.md`](docs/testing.md)).
-5. **Run `check`** (Commands, below). Green before every push.
-6. **Open one PR.** Its title and description become the commit on `main`
-   ([`docs/workflow.md`](docs/workflow.md) "Pull requests"). If it changes
-   behavior, it updates `SPEC.md` too.
-7. **Watch it to green** — fix red CI and conflicts on the same branch, answer
-   review. A human merges.
+1. **Read first:** the task, the relevant parts of `SPEC.md`, and recent
+   entries in `DECISIONS.md`.
+2. **Shape it if it's fuzzy.** Use the `ask-me` skill to form intent, or
+   `grill-me` to stress-test a plan. Write what comes out into the spec.
+3. **Branch from `main`.** Use `type/short-description` (`feat/login-form`),
+   or the branch name your agent platform assigns.
+4. **Build, with tests.** Behavior that's settled ships with tests; writing
+   the test first is the default.
+5. **Run `check`** (Commands, below).
+6. **Record decisions.** Add a `DECISIONS.md` entry for each decision this
+   change acts on (Recording decisions, below).
+7. **Open a PR** with a clear title and description (below). Fix CI if it
+   goes red. The developer merges.
 
-Changing only Markdown? Steps 4–5 don't apply
-([`docs/workflow.md`](docs/workflow.md) "Docs-only changes"). Running a spike?
-This loop doesn't apply at all ([`docs/workflow.md`](docs/workflow.md)
-"Spikes").
+Changing only Markdown? Skip steps 4–5; step 6 still applies.
 
-### Protocol docs — read when
+## Spikes
 
-| Read | When |
-|---|---|
-| [`docs/spec-driven-development.md`](docs/spec-driven-development.md) | Reading, writing, or changing `SPEC.md`; the spec is silent or wrong; a change is too big for one PR, so it needs a plan. |
-| [`docs/workflow.md`](docs/workflow.md) | Anything Git or GitHub: taking or filing an issue, scope, branching, committing, opening or watching a PR, merging, docs-only changes, spikes. |
-| [`docs/testing.md`](docs/testing.md) | Writing tests. |
-| [`docs/ci.md`](docs/ci.md) | Changing CI or `check`; CI fails in a way you don't understand. |
-| [`docs/documentation.md`](docs/documentation.md) | Writing or editing any doc, naming files, auditing docs for drift. |
+When the question is "would this work?" or "A or B?", spike it: throwaway
+code on a `spike/<question>` branch, no tests or tidiness required. Open it
+as a **draft PR** titled `spike: <question>` with the findings in the
+description — question, what you tried, what worked, recommendation. Close
+it unmerged, then carry the outcome forward through the working loop: the
+PR that acts on it updates `SPEC.md` and records the decision, citing the
+spike PR.
+
+## Recording decisions
+
+Decisions get made in chat, in interviews (`ask-me`, `grill-me`), and while
+building. The chat is gone when the session ends, so **the PR that acts on a
+decision records it** in [`DECISIONS.md`](DECISIONS.md), in the same PR.
+
+- **Acted on → recorded.** If a decision shapes the change — the code, the
+  spec, or the way of working — it gets an entry, and the PR lists its ID.
+- **Not acted on → discarded.** A decision talked through but not acted on
+  isn't logged. If it still matters, it becomes an open question in
+  `SPEC.md` or a follow-up issue; it's recorded when some later PR acts on it.
+- **Before opening a PR,** review the session for decisions that shaped the
+  change, small ones included: a choice between alternatives, a constraint
+  the developer stated, something dropped or deferred. When unsure, record
+  it — an entry is cheap; a lost reason isn't.
+
+Entries are short: what was decided, why, what else was considered, and the
+PR that acted on it. Newest at the top. Never edit an old entry's
+substance — supersede it with a new one and mark the old one
+`Superseded by D-n`. The spec states the outcome; a rule that needs
+explaining can point to its entry (`See D-4.`).
+
+## Pull requests and commits
+
+PRs land by **squash merge**, so the PR title becomes the commit subject on
+`main` and the description becomes its body.
+
+- **Title:** a [Conventional Commits](https://www.conventionalcommits.org/)
+  subject — `type(scope): imperative subject`, ≤ 72 characters. Types:
+  `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `ci`, `build`.
+- **Description:** fill in the
+  [template](.github/pull_request_template.md) — what and why, the
+  decisions recorded, how it was tested. Delete the guidance comments.
+- **Branch commits** don't reach `main`; any message that says what the step
+  did is fine. Don't force-push a branch you've pushed — merge `main` in to
+  catch up.
+
+## Documentation style
+
+- **Present tense.** Docs describe the project as it is now. History lives
+  in git and `DECISIONS.md`; don't leave struck-through or "updated in v2"
+  text behind.
+- **One home per fact.** Other docs link to it rather than copying it.
+- **Short and skimmable.** Every doc opens with a `# Title` and one line on
+  what it's for. Link relatively, and cite sections by heading.
+- **Naming:** root meta-files in `ALL-CAPS.md`; everything under `docs/` in
+  `kebab-case.md`.
 
 ## Commands
-
-<!-- TEMPLATE: fill in from the project's stack (a stack module supplies
-these — see TEMPLATE.md). -->
 
 | Task | Command |
 |---|---|
 | Install | `{{INSTALL_CMD}}` |
 | **Check — the gate** | `{{CHECK_CMD}}` |
-| Fix formatting and autofixable lint | `{{FIX_CMD}}` |
 | Run one test, or a few | `{{TEST_CMD}}` |
 | Run the project | `{{RUN_CMD}}` |
 
-`check` runs everything the gate requires — lint, format check, typecheck,
-tests, build, whatever the stack has — and never modifies files. CI runs this
-one command ([`docs/ci.md`](docs/ci.md)), so green locally means green in CI.
-
-## When in doubt
-
-- **The spec is silent, ambiguous, or wrong** → don't guess. If proceeding
-  means guessing at behavior or risking an invariant, stop: add an open
-  question to `SPEC.md`, raise it (with the user, or on the issue), and
-  resolve it by editing the spec before writing code that depends on it
-  ([`docs/spec-driven-development.md`](docs/spec-driven-development.md)).
-- **Adjacent work** — an edge case, a follow-on idea, tech debt — becomes its
-  own issue, not a `TODO` and not part of this PR
-  ([`docs/workflow.md`](docs/workflow.md) "Scope").
-- **Doc drift you spot while working** → fix it in a separate docs-only PR,
-  or file it ([`docs/documentation.md`](docs/documentation.md) "Doc audit").
+`check` runs everything a change must pass — lint, format check, typecheck,
+tests, whatever the stack has — and never modifies files. CI runs the same
+command, so green locally means green in CI.

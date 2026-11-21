@@ -93,11 +93,11 @@ whether it survives contact with reality, use this skill.
 
 ## Notes for this repo
 
-- Work here is done by memoryless sessions taking one issue at a time
-  (`AGENTS.md` "Working loop"). Grill the plan for *that* issue's acceptance criteria — a
-  grilling session is not license to expand scope into later work, even when
-  the interview surfaces a legitimately good idea for it.
-- If grilling surfaces a real gap outside the current issue's scope (an
-  ambiguity in the docs, a missing hard-rule test, an idea for later), don't
-  fold it into the current plan — file it per `docs/workflow.md`
-  instead.
+- Sessions here have no memory of earlier ones. Keep track of what the
+  grilling settled: the PR that acts on it records each decision in
+  `DECISIONS.md` and the design changes in `SPEC.md`. Gaps still open go
+  into the spec's "Open questions". Anything settled but not acted on isn't
+  logged (`AGENTS.md` "Recording decisions").
+- Grilling is not license to expand scope. If it surfaces a real gap outside
+  the current task, note it as a follow-up rather than folding it into the
+  current plan.
