@@ -82,11 +82,10 @@ use this skill.
 
 ## Notes for this repo
 
-- Work here is done by memoryless sessions taking one issue at a time
-  (`AGENTS.md` "Working loop"). When `ask-me` is used ahead of picking up an issue, keep
-  the interview scoped to *that issue's* intent — it is not a license to plan
-  ahead into later work.
-- If the interview surfaces a genuinely separate concern (a bug, a missing
-  detail in the docs, an idea for later), don't fold it into the current
-  work — note it as a candidate for a new issue per
-  `docs/workflow.md`.
+- Sessions here have no memory of earlier ones, so write the confirmed intent
+  where the next session will find it: purpose and non-goals into `SPEC.md`,
+  unresolved points into its "Open questions", and any real choice the user
+  made into `DECISIONS.md` (`AGENTS.md` "Recording decisions").
+- Keep the interview scoped to the task at hand. If it surfaces a separate
+  concern (a bug, an idea for later), note it as a follow-up rather than
+  folding it into the current work.

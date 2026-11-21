@@ -3,40 +3,26 @@
 `status: draft`
 
 <!-- TEMPLATE: status is one of
-- draft    — being written; nothing is built from it yet.
-- building — the initial build plan is open; the spec isn't yet true of main.
-- current  — true of main, except sections marked `Planned (#N):`, where #N
-             is the plan issue building them.
+- draft    — still being worked out; little or nothing is built from it.
+- building — code is being written against it; parts aren't true of main yet.
+- current  — describes main.
 
-Right-size this spec: keep the parts the project needs and delete the rest. A
-small tool's spec can fit on a page. How to write and use it:
-docs/spec-driven-development.md. -->
+Keep only the sections the project needs; a small idea fits on a page. -->
 
-The source of truth for **what to build**. Written in the present tense: it
-describes the system as it is on `main`, except where marked `Planned`. Its
-history is in git (`git log -- SPEC.md`), not in this file.
+The design document: **what to build**, in the present tense. Why things are
+the way they are lives in [`DECISIONS.md`](DECISIONS.md); how the spec got
+here lives in git (`git log -- SPEC.md`).
 
 ## Purpose & non-goals
 
-<!-- TEMPLATE: what the project is and who it's for, in a paragraph. Then the
-non-goals — what it deliberately isn't, and the tempting work that's out of
-scope. -->
+<!-- TEMPLATE: what this is, who it's for, and the problem it solves, in a
+paragraph. Then the non-goals — what it deliberately isn't. -->
 
 {{PROJECT_PURPOSE}}
 
 **Non-goals:**
 
 - …
-
-## Invariants
-
-These hold for every change. A change that breaks one is wrong even if CI is
-green.
-
-<!-- TEMPLATE: 3–7 timeless, testable rules. The test or lint rule that
-enforces each one names its ID. -->
-
-- **`INV-1` — {{INVARIANT_NAME}}.** {{INVARIANT}}
 
 ## Concepts
 
@@ -46,31 +32,22 @@ enforces each one names its ID. -->
 |---|---|
 | | |
 
-## Architecture
+## Design
 
-<!-- TEMPLATE: the components, what each owns, and the boundaries between them.
-A diagram or tree beats prose. -->
+<!-- TEMPLATE: the parts of the system, what each does, and how they fit
+together. A sketch or tree beats prose. Add subsections (interfaces,
+behavior, data) as the design firms up. -->
 
-## Interfaces
+## Invariants
 
-<!-- TEMPLATE: every surface other code or people depend on — types, APIs,
-file formats, CLI — precise enough to test against. Mark each surface that is
-versioned (docs/workflow.md "Versioned surfaces"). -->
-
-## Behavior
-
-<!-- TEMPLATE: rules, state transitions, and error cases, at the precision a
-test can be written from. When a rule needs a `Why:` line, see
-docs/spec-driven-development.md "Writing it". -->
-
-## Quality bars
-
-<!-- TEMPLATE: budgets as numbers — latency, size, supported platforms,
-security posture. -->
+<!-- TEMPLATE: optional early on. A few rules that must always hold, each with
+a stable ID (`INV-1`) so tests can name the rule they guard. Delete this
+section until there's something worth stating. -->
 
 ## Open questions
 
-Undecided, and **not contract** — don't build against these; resolve one by
-editing the spec, then delete it here.
+Undecided — don't build against these. Resolve one by writing the answer into
+the sections above (and `DECISIONS.md`, if it was a real choice), then delete
+it here.
 
 - None yet.

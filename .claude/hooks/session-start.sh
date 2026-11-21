@@ -1,7 +1,7 @@
 #!/bin/bash
 # SessionStart hook: prepares a cloud session so `check` can run
 # (AGENTS.md "Commands"). Runs only in Claude Code on the web; a local machine
-# is set up by hand (CONTRIBUTING.md).
+# is set up by hand (README.md "Getting started").
 set -euo pipefail
 
 if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
@@ -10,7 +10,7 @@ fi
 
 cd "${CLAUDE_PROJECT_DIR:-.}"
 
-# TEMPLATE: install dependencies here (a stack module fills this in). The
+# TEMPLATE: install dependencies here once the stack is chosen. The
 # container is cached once this hook completes, so prefer the install form
 # that reuses what's already there (e.g. `npm install` over `npm ci`). Keep it
 # idempotent and non-interactive.
